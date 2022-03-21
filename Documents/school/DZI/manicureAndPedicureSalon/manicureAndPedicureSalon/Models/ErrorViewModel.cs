@@ -1,6 +1,6 @@
 using System;
 
-namespace manicureAndPedicureSalon.Models
+namespace ManicureAndPedicureSalon.Models
 {
     public class ErrorViewModel
     {

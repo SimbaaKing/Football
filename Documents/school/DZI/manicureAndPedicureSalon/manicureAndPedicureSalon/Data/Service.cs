@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace manicureAndPedicureSalon.Data
+namespace ManicureAndPedicureSalon.Data
 {
     public class Service
     {

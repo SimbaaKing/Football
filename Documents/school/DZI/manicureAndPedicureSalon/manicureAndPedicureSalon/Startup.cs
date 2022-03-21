@@ -1,4 +1,4 @@
-using manicureAndPedicureSalon.Data;
+using ManicureAndPedicureSalon.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace manicureAndPedicureSalon
+namespace ManicureAndPedicureSalon
 {
     public class Startup
     {
@@ -34,6 +34,7 @@ namespace manicureAndPedicureSalon
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<Client>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 

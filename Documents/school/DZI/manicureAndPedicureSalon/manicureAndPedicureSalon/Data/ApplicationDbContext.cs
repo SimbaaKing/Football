@@ -3,8 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ManicureAndPedicureSalon.Data;
 
-namespace manicureAndPedicureSalon.Data
+namespace ManicureAndPedicureSalon.Data
 {
     public class ApplicationDbContext : IdentityDbContext<Client>
     {
@@ -16,6 +17,7 @@ namespace manicureAndPedicureSalon.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Appoitment> Appoitments { get; set; }
         public DbSet<Service> Services { get; set; }
+        public DbSet<Product> Product { get; set; }
 
     }
 }
