@@ -97,8 +97,20 @@ namespace ManicureAndPedicureSalon.Controllers
             {
                 return NotFound();
             }
+            ServicesVM model = new ServicesVM();
+            model.EmployerId = service.EmployerId;
+            model.Name = service.Name;
+            
+
+            model.Employers = _context.Employers.Select(x => new SelectListItem
+            {
+                Value = x.EmployerId.ToString(),
+                Text = x.Name,
+                Selected = x.EmployerId == model.EmployerId
+            }).ToList();
+
             ViewData["EmployerId"] = new SelectList(_context.Employers, "EmployerId", "EmployerId", service.EmployerId);
-            return View(service);
+            return View(model);
         }
 
         // POST: Services/Edit/5

@@ -5,5 +5,5 @@ using System.Threading.Tasks;
 
 namespace ManicureAndPedicureSalon.Data
 {
-    public enum Roles { User, Admin }
+    public enum Roles { User, Admin , Employer}
 }

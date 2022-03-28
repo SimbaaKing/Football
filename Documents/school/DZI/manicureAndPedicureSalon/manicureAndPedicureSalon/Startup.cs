@@ -33,7 +33,7 @@ namespace ManicureAndPedicureSalon
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<Client>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<Client>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -44,6 +44,7 @@ namespace ManicureAndPedicureSalon
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDataBase().Wait();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

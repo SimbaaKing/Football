@@ -51,6 +51,12 @@ namespace ManicureAndPedicureSalon.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            [Required(ErrorMessage = "The field is required")]
+            
+            [Display(Name = "User Name")]
+            public string UserName { get; set; }
+
+
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -61,6 +67,11 @@ namespace ManicureAndPedicureSalon.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "The field is requared")]
+
+            [Display(Name = "FullName")]
+            public string FullName { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -75,18 +86,25 @@ namespace ManicureAndPedicureSalon.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new Client { UserName = Input.Email, Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var Client = new Client {
+                    UserName = Input.UserName,
+                    Email = Input.Email,
+                    FullName = Input.FullName,
+
+                };
+               // var user = new Client { UserName = Input.Email, Email = Input.Email };
+                var result = await _userManager.CreateAsync(Client, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    var result1 = await _userManager.AddToRoleAsync(Client,Roles.User.ToString());
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(Client);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId = Client.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -98,7 +116,7 @@ namespace ManicureAndPedicureSalon.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _signInManager.SignInAsync(Client, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }

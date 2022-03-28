@@ -172,3 +172,8 @@ C:\Users\Home\Documents\school\DZI\manicureAndPedicureSalon\manicureAndPedicureS
 C:\Users\Home\Documents\school\DZI\manicureAndPedicureSalon\manicureAndPedicureSalon\obj\Debug\net5.0\Razor\Views\Employers\Details.cshtml.g.cs
 C:\Users\Home\Documents\school\DZI\manicureAndPedicureSalon\manicureAndPedicureSalon\obj\Debug\net5.0\Razor\Views\Employers\Edit.cshtml.g.cs
 C:\Users\Home\Documents\school\DZI\manicureAndPedicureSalon\manicureAndPedicureSalon\obj\Debug\net5.0\Razor\Views\Employers\Index.cshtml.g.cs
+C:\Users\Home\Documents\school\DZI\manicureAndPedicureSalon\manicureAndPedicureSalon\obj\Debug\net5.0\Razor\Views\Orders\Create.cshtml.g.cs
+C:\Users\Home\Documents\school\DZI\manicureAndPedicureSalon\manicureAndPedicureSalon\obj\Debug\net5.0\Razor\Views\Orders\Delete.cshtml.g.cs
+C:\Users\Home\Documents\school\DZI\manicureAndPedicureSalon\manicureAndPedicureSalon\obj\Debug\net5.0\Razor\Views\Orders\Details.cshtml.g.cs
+C:\Users\Home\Documents\school\DZI\manicureAndPedicureSalon\manicureAndPedicureSalon\obj\Debug\net5.0\Razor\Views\Orders\Edit.cshtml.g.cs
+C:\Users\Home\Documents\school\DZI\manicureAndPedicureSalon\manicureAndPedicureSalon\obj\Debug\net5.0\Razor\Views\Orders\Index.cshtml.g.cs
