@@ -43,8 +43,7 @@ namespace ManicureAndPedicureSalon.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required]            
             public string UserName { get; set; }
 
             [Required]

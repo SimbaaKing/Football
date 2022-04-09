@@ -17,7 +17,7 @@ namespace ManicureAndPedicureSalon.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Appoitment> Appoitments { get; set; }
         public DbSet<Service> Services { get; set; }
-        public DbSet<Product> Product { get; set; }
+        public DbSet<Product> Products { get; set; }
 
     }
 }

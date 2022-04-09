@@ -86,25 +86,25 @@ namespace ManicureAndPedicureSalon.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var Client = new Client {
+                var client = new Client {
                     UserName = Input.UserName,
                     Email = Input.Email,
                     FullName = Input.FullName,
 
                 };
                // var user = new Client { UserName = Input.Email, Email = Input.Email };
-                var result = await _userManager.CreateAsync(Client, Input.Password);
+                var result = await _userManager.CreateAsync(client, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    var result1 = await _userManager.AddToRoleAsync(Client,Roles.User.ToString());
+                    var result1 = await _userManager.AddToRoleAsync(client,Roles.User.ToString());
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(Client);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(client);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = Client.Id, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId = client.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -116,7 +116,7 @@ namespace ManicureAndPedicureSalon.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(Client, isPersistent: false);
+                        await _signInManager.SignInAsync(client, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }

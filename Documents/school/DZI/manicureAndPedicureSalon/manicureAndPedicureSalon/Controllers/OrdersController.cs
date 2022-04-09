@@ -12,6 +12,7 @@ using ManicureAndPedicureSalon.Models;
 
 namespace ManicureAndPedicureSalon.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,10 +27,25 @@ namespace ManicureAndPedicureSalon.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()//GetMyOrders()
         {
-            var applicationDbContext = _context.Orders.Include(o => o.Product);
-            return View(await applicationDbContext.ToListAsync());
+            if (User.IsInRole("Admin"))
+            {
+                var applicationDbContext = _context.Orders
+                      .Include(o => o.Product)
+                      .Include(o => o.Client);
+                      return View(await applicationDbContext.ToListAsync());
+            }
+            else
+            {
+                var currentUser = _userManager.GetUserId(User);
+                var myOrders = _context.Orders
+                    .Include(o => o.Product)
+                    .Include(u => u.Client)
+                    .Where(x => x.ClientId == currentUser)
+                    .ToListAsync();
+                return View(await myOrders);
+            }
         }
 
         // GET: Orders/Details/5
@@ -55,10 +71,21 @@ namespace ManicureAndPedicureSalon.Controllers
         [Authorize(Roles = "User, Admin")]
         public IActionResult Create()
         {
-           
+            OrdersVM model = new OrdersVM();
 
-            ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Id");
-            return View();
+            model.Products = _context.Products.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString(),
+                Selected = (x.Id == model.ProductId)
+            }
+            ).ToList();
+
+            return View(model);
+
+
+            //ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Id");
+            //return View();
         }
 
         // POST: Orders/Create
@@ -66,16 +93,34 @@ namespace ManicureAndPedicureSalon.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProductId,ClientId,Quantity,OrderedOn")] Order order)
+        public async Task<IActionResult> Create([Bind("Id,ProductId,ClientId,Quantity,OrderedOn")] OrdersVM order)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(order);
+                OrdersVM model = new OrdersVM();
+                model.Products = _context.Products.Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString(),
+                    Selected = (x.Id == model.ProductId)
+                }
+                ).ToList();
+                return View(model);
+            }
+
+                Order modelToDB = new Order
+                {
+                    ProductId = order.ProductId,
+                    ClientId = _userManager.GetUserId(User),
+                    OrderedOn = DateTime.Now,
+                    Quantity = order.Quantity
+                };
+                _context.Add(modelToDB);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Id", order.ProductId);
-            return View(order);
+            
+            //ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Id", order.ProductId);
+            //return View(order);
         }
 
         // GET: Orders/Edit/5
@@ -91,7 +136,7 @@ namespace ManicureAndPedicureSalon.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Id", order.ProductId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", order.ProductId);
             return View(order);
         }
 
@@ -127,7 +172,7 @@ namespace ManicureAndPedicureSalon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Id", order.ProductId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", order.ProductId);
             return View(order);
         }
 
